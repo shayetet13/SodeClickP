@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./Backend
+    ports:
+      - "5000:5000"
+    environment:
+      # Database Configuration
+      - MONGODB_URI=mongodb+srv://shayetet14:sdg5NrhmPFak8T3y@cluster0.2g7xxjp.mongodb.net/love?retryWrites=true&w=majority&appName=Cluster0
+      
+      # Server Configuration
+      - NODE_ENV=development
+      - PORT=5000
+      - HOST=0.0.0.0
+      
+      # JWT Configuration
+      - JWT_SECRET=your_jwt_secret_key_here_minimum_32_characters_long
+      - JWT_EXPIRE=24h
+      
+      # CORS Configuration
+      - CORS_ORIGIN=http://localhost:5173
+      
+      # File Upload Configuration
+      - MAX_FILE_SIZE=10485760
+      - UPLOAD_PATH=./uploads
+      
+      # Admin Configuration
+      - ADMIN_USERNAME=Admin
+      - ADMIN_EMAIL=admin@sodeclick.com
+      - ADMIN_PASSWORD=root77
+      
+      # Security Configuration
+      - BCRYPT_ROUNDS=12
+      - SESSION_SECRET=your_session_secret_key_here
+      
+      # Rate Limiting
+      - RATE_LIMIT_WINDOW_MS=900000
+      - RATE_LIMIT_MAX_REQUESTS=100
+      
+      # Logging Configuration
+      - LOG_LEVEL=info
+      - LOG_FILE=./logs/app.log
+      
+      # Health Check Configuration
+      - HEALTH_CHECK_TIMEOUT=5000
+      - HEALTH_CHECK_INTERVAL=30000
+    volumes:
+      - ./Backend/uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+  frontend:
+    build: ./Frontend
+    ports:
+      - "5173:5173"
+    environment:
+      # API Configuration
+      - VITE_API_URL=http://localhost:5000
+      - VITE_SOCKET_URL=http://localhost:5000
+      
+      # App Configuration
+      - VITE_APP_NAME=Love App
+      - VITE_APP_VERSION=1.0.0
+      - VITE_APP_DESCRIPTION=Elite Dating Platform
+      
+      # Feature Flags
+      - VITE_ENABLE_CHAT=true
+      - VITE_ENABLE_PREMIUM=true
+      - VITE_ENABLE_ADMIN=true
+      - VITE_ENABLE_NOTIFICATIONS=true
+      - VITE_ENABLE_ANALYTICS=false
+      
+      # UI Configuration
+      - VITE_THEME_PRIMARY_COLOR=#007bff
+      - VITE_THEME_SECONDARY_COLOR=#6c757d
+      - VITE_DEFAULT_LANGUAGE=th
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+
+networks:
+  default:
+    name: love-network 

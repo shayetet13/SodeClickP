@@ -1,0 +1,20 @@
+[phases.setup]
+nixPkgs = ["nodejs-18_x", "npm-9_x"]
+
+[phases.install]
+cmds = [
+  "cd Backend && npm install --only=production",
+  "cd Backend && ls -la",
+  "echo 'Dependencies installed'"
+]
+
+[phases.build]
+cmds = [
+  "echo 'NODE_ENV: $NODE_ENV'",
+  "echo 'PORT: $PORT'",
+  "echo 'MONGODB_URI exists:' && test -n '$MONGODB_URI' && echo 'YES' || echo 'NO'",
+  "echo 'Backend ready for deployment'"
+]
+
+[start]
+cmd = "cd Backend && node debug-startup.js"

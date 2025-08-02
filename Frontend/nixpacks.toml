@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ['nodejs', 'npm']
+
+[phases.install]
+cmds = ['npm install']
+
+[phases.build]
+cmds = ['npm run build:prod']
+
+[start]
+cmd = 'npm run serve'
+
+[variables]
+NIXPACKS_NODE_PKGS = "nodejs npm" 

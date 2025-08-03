@@ -8,6 +8,7 @@ import { AuthModal } from "./components/auth/AuthModal";
 import { FaGoogle, FaFacebook, FaLine } from "react-icons/fa6";
 import { useAuth } from './contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from './components/ui/notification';
 import { API_BASE_URL, SOCKET_URL, API_ENDPOINTS } from './utils/constants';
 
 // แก้ไขการ import เพื่อแก้ error
@@ -463,6 +464,7 @@ export default function App() {
   const [showImageModal, setShowImageModal] = useState(false);
   const [modalImageSrc, setModalImageSrc] = useState("");
   const { user, isAuthenticated, logout: authLogout } = useAuth();
+  const { showWarning, showError } = useNotification();
   const navigate = useNavigate();
   const carouselRef = useRef(null)
   const chatEndRef = useRef(null)
@@ -741,7 +743,7 @@ export default function App() {
   const handleImageUpload = async (event) => {
     // ตรวจสอบว่าผู้ใช้ได้ login แล้วก่อนอัปโหลดรูปภาพ
     if (!isAuthenticated || !user) {
-      alert('กรุณาเข้าสู่ระบบเพื่ออัปโหลดรูปภาพ');
+      showWarning('กรุณาเข้าสู่ระบบเพื่ออัปโหลดรูปภาพ', 'ต้องเข้าสู่ระบบ');
       setAuthModalView("login");
       setIsAuthModalOpen(true);
       event.target.value = ''; // clear file input
@@ -902,7 +904,7 @@ export default function App() {
     // ตรวจสอบว่าผู้ใช้ได้ login แล้วก่อนกด like
     if (!isAuthenticated || !user) {
       console.log('User not authenticated, showing login modal');
-      alert('กรุณาเข้าสู่ระบบเพื่อกด like ข้อความ');
+      showWarning('กรุณาเข้าสู่ระบบเพื่อกด like ข้อความ', 'ต้องเข้าสู่ระบบ');
       setAuthModalView("login");
       setIsAuthModalOpen(true);
       return;
@@ -939,7 +941,7 @@ export default function App() {
     // ตรวจสอบว่าผู้ใช้ได้ login แล้วก่อนทำ emoji reaction
     if (!isAuthenticated || !user) {
       console.log('User not authenticated, showing login modal');
-      alert('กรุณาเข้าสู่ระบบเพื่อใช้งาน emoji reaction');
+      showWarning('กรุณาเข้าสู่ระบบเพื่อใช้งาน emoji reaction', 'ต้องเข้าสู่ระบบ');
       setAuthModalView("login");
       setIsAuthModalOpen(true);
       setShowEmojiPicker(null);
@@ -1017,7 +1019,7 @@ export default function App() {
     
     // ตรวจสอบว่าผู้ใช้ได้ login แล้วก่อนส่งข้อความ
     if (!isAuthenticated || !user) {
-      alert('กรุณาเข้าสู่ระบบเพื่อส่งข้อความ');
+      showWarning('กรุณาเข้าสู่ระบบเพื่อส่งข้อความ', 'ต้องเข้าสู่ระบบ');
       setAuthModalView("login");
       setIsAuthModalOpen(true);
       return;
@@ -1735,8 +1737,8 @@ export default function App() {
                               
                               // แก้ไขเงื่อนไขให้ชัดเจนขึ้น
                               if (isAuthenticated === false || !user || user === null || user === undefined) {
-                                console.log('Showing login alert for like');
-                                alert('กรุณาเข้าสู่ระบบเพื่อกด like ข้อความ');
+                                console.log('Showing login notification for like');
+                                showWarning('กรุณาเข้าสู่ระบบเพื่อกด like ข้อความ', 'ต้องเข้าสู่ระบบ');
                                 setAuthModalView("login");
                                 setIsAuthModalOpen(true);
                                 return;
@@ -1761,8 +1763,8 @@ export default function App() {
                               console.log('isAuthenticated:', isAuthenticated);
                               console.log('user:', user);
                               if (!isAuthenticated || !user) {
-                                console.log('Showing login alert for reply');
-                                alert('กรุณาเข้าสู่ระบบเพื่อตอบกลับข้อความ');
+                                console.log('Showing login notification for reply');
+                                showWarning('กรุณาเข้าสู่ระบบเพื่อตอบกลับข้อความ', 'ต้องเข้าสู่ระบบ');
                                 setAuthModalView("login");
                                 setIsAuthModalOpen(true);
                                 return;
@@ -1782,8 +1784,8 @@ export default function App() {
                               console.log('isAuthenticated:', isAuthenticated);
                               console.log('user:', user);
                               if (!isAuthenticated || !user) {
-                                console.log('Showing login alert for emoji');
-                                alert('กรุณาเข้าสู่ระบบเพื่อใช้งาน emoji reaction');
+                                console.log('Showing login notification for emoji');
+                                showWarning('กรุณาเข้าสู่ระบบเพื่อใช้งาน emoji reaction', 'ต้องเข้าสู่ระบบ');
                                 setAuthModalView("login");
                                 setIsAuthModalOpen(true);
                                 return;

@@ -58,288 +58,87 @@ import {
 
 import io from 'socket.io-client'
 
-// ปรับลดจำนวน membership plans เหลือ 6 แผน
+// Dating-focused membership plans
 const membershipPlans = [
   {
     id: 1,
-    name: "Member",
-    icon: Users,
+    name: "Basic",
+    icon: Heart,
     price: "ฟรี",
     period: "",
     color: "zinc",
     recommended: false,
     benefits: [
-      "แชทได้วันละ 10 คน",
-      "อัพรูปภาพสำหรับแชท 3 รูป",
-      "อัพวิดีโอสำหรับแชทได้ 1 คลิป",
-      "หมุนวงล้อของขวัญวันละ 1 ครั้ง",
-      "โบนัสรายวัน 500 เหรียญ",
+      "ไลค์ได้วันละ 10 คน",
+      "ดูคนที่ไลค์คุณ 3 คน",
+      "แชทกับแมตช์ได้ไม่จำกัด",
+      "ฟีเจอร์ค้นหาพื้นฐาน",
+      "รีวายด์ 1 ครั้งต่อวัน",
     ],
     iconMap: {
-      0: MessageCircle,
-      1: Image,
-      2: Video,
-      3: Gift,
-      4: Coins,
+      0: Heart,
+      1: Users,
+      2: MessageCircle,
+      3: Search,
+      4: ChevronLeft,
     }
   },
   {
     id: 2,
-    name: "Silver",
+    name: "Plus",
     icon: Star,
-    price: "฿20",
-    period: "7 วัน",
-    color: "gray",
-    recommended: "มือใหม่",
+    price: "฿99",
+    period: "1 เดือน",
+    color: "blue",
+    recommended: "ยอดนิยม",
     benefits: [
-      "แชทได้วันละ 30 คน",
-      "อัพรูปภาพสำหรับแชท 30 รูป",
-      "อัพวิดีโอสำหรับแชทได้ 10 คลิป",
-      "หมุนวงล้อของขวัญทุก 2 ชั่วโมง",
-      "โบนัสรายวัน 1,000 เหรียญ",
-      "คะแนนโหวต 200 แต้ม",
+      "ไลค์ได้ไม่จำกัด",
+      "ดูคนที่ไลค์คุณทั้งหมด",
+      "รีวายด์ไม่จำกัด",
+      "ซุปเปอร์ไลค์ 5 ครั้งต่อสัปดาห์",
+      "บูสต์โปรไฟล์ 1 ครั้งต่อเดือน",
+      "ฟิลเตอร์ขั้นสูง",
     ],
     iconMap: {
-      0: MessageCircle,
-      1: Image,
-      2: Video,
-      3: Gift,
-      4: Coins,
-      5: Medal,
+      0: Heart,
+      1: Users,
+      2: ChevronLeft,
+      3: Star,
+      4: Zap,
+      5: Search,
     }
   },
   {
     id: 3,
-    name: "Gold",
+    name: "Premium",
     icon: Crown,
-    price: "฿50",
-    period: "15 วัน",
+    price: "฿199",
+    period: "1 เดือน",
     color: "amber",
-    recommended: "แฟลชเฟล",
+    recommended: "คุ้มสุด",
     benefits: [
-      "แชทได้วันละ 60 คน",
-      "อัพรูปภาพสำหรับแชท 50 รูป",
-      "อัพวิดีโอสำหรับแชทได้ 25 คลิป",
-      "หมุนวงล้อของขวัญทุก 90 นาที",
-      "โบนัสรายวัน 3,000 เหรียญ",
-      "คะแนนโหวต 500 แต้ม",
-      "เพิ่มวิดีโอโปรไฟล์ 1 คลิป",
+      "ทุกฟีเจอร์ของ Plus",
+      "ซุปเปอร์ไลค์ไม่จำกัด",
+      "บูสต์โปรไฟล์ไม่จำกัด",
+      "ดูใครเข้าชมโปรไฟล์คุณ",
+      "ข้ามคิวในการแมตช์",
+      "แชทก่อนแมตช์",
+      "โหมดไม่ระบุตัวตน",
       "ติ๊กยืนยันโปรไฟล์",
-      "กรอบโปรไฟล์พิเศษเฉพาะสมาชิก",
+      "ฟิลเตอร์ขั้นสูงพิเศษ",
     ],
     iconMap: {
-      0: MessageCircle,
-      1: Image,
-      2: Video,
-      3: Gift,
-      4: Coins,
-      5: Medal,
-      6: Video,
+      0: Star,
+      1: Heart,
+      2: Zap,
+      3: Users,
+      4: Target,
+      5: MessageCircle,
+      6: EyeOff,
       7: SquareCheck,
-      8: SquarePen,
+      8: Search,
     }
   },
-  {
-    id: 4,
-    name: "VIP",
-    icon: Crown,
-    price: "฿100",
-    period: "เดือน",
-    color: "purple",
-    recommended: "โปรโมชั่น",
-    benefits: [
-      "แชทได้วันละ 120 คน",
-      "อัพรูปภาพสำหรับแชท 100 รูป",
-      "อัพวิดีโอสำหรับแชทได้ 50 คลิป",
-      "หมุนวงล้อของขวัญทุก 1 ชั่วโมง",
-      "โบนัสรายวัน 8,000 เหรียญ",
-      "คะแนนโหวต 1,000 แต้ม",
-      "เพิ่มวิดีโอโปรไฟล์ 3 คลิป",
-      "ติ๊กยืนยันโปรไฟล์",
-      "กรอบโปรไฟล์พิเศษเฉพาะสมาชิก",
-      "ปักหมุดโพสต์ 1 โพสต์ หน้าโปรไฟล์",
-      "เบลอรูปภาพ ส่วนตัวได้ 3 รูป",
-      "สร้างห้องแชท จำนวน 10 คน",
-    ],
-    iconMap: {
-      0: MessageCircle,
-      1: Image,
-      2: Video,
-      3: Gift,
-      4: Coins,
-      5: Medal,
-      6: Video,
-      7: SquareCheck,
-      8: SquarePen,
-      9: SquarePen,
-      10: EyeOff,
-      11: Users2,
-    }
-  },
-  {
-    id: 5,
-    name: "VIP 1",
-    icon: Crown,
-    price: "฿150",
-    period: "เดือน",
-    color: "pink",
-    recommended: false,
-    benefits: [
-      "แชทได้วันละ 180 คน",
-      "อัพรูปภาพสำหรับแชท 150 รูป",
-      "อัพวิดีโอสำหรับแชทได้ 75 คลิป",
-      "หมุนวงล้อของขวัญทุก 45 นาที",
-      "โบนัสรายวัน 15,000 เหรียญ",
-      "คะแนนโหวต 1,500 แต้ม",
-      "เพิ่มวิดีโอโปรไฟล์ 5 คลิป",
-      "ติ๊กยืนยันโปรไฟล์",
-      "กรอบโปรไฟล์พิเศษเฉพาะสมาชิก",
-      "ปักหมุดโพสต์ 3 โพสต์ หน้าโปรไฟล์",
-      "เบลอรูปภาพ ส่วนตัวได้ 5 รูป",
-      "สร้างห้องแชท จำนวน 20 คน",
-      "ตั้งค่าซ่อนสถานะออนไลน์ได้",
-    ],
-    iconMap: {
-      0: MessageCircle,
-      1: Image,
-      2: Video,
-      3: Gift,
-      4: Coins,
-      5: Medal,
-      6: Video,
-      7: SquareCheck,
-      8: SquarePen,
-      9: SquarePen,
-      10: EyeOff,
-      11: Users2,
-      12: EyeOff,
-    }
-  },
-  {
-    id: 6,
-    name: "VIP 2",
-    icon: Diamond,
-    price: "฿300",
-    period: "เดือน",
-    color: "indigo",
-    recommended: "สุดคุ้ม",
-    benefits: [
-      "แชทได้วันละ 300 คน",
-      "อัพรูปภาพสำหรับแชทไม่จำกัด",
-      "อัพวิดีโอสำหรับแชทได้ไม่จำกัด",
-      "หมุนวงล้อของขวัญทุก 30 นาที",
-      "โบนัสรายวัน 30,000 เหรียญ",
-      "คะแนนโหวต 3,000 แต้ม",
-      "เพิ่มวิดีโอโปรไฟล์ 10 คลิป",
-      "ติ๊กยืนยันโปรไฟล์",
-      "กรอบโปรไฟล์พิเศษเฉพาะสมาชิก",
-      "ปักหมุดโพสต์ 5 โพสต์ หน้าโปรไฟล์",
-      "เบลอรูปภาพ ส่วนตัวได้ 10 รูป",
-      "สร้างห้องแชท จำนวน 30 คน",
-      "ตั้งค่าซ่อนสถานะออนไลน์ได้",
-    ],
-    iconMap: {
-      0: MessageCircle,
-      1: Image,
-      2: Video,
-      3: Gift,
-      4: Coins,
-      5: Medal,
-      6: Video,
-      7: SquareCheck,
-      8: SquarePen,
-      9: SquarePen,
-      10: EyeOff,
-      11: Users2,
-      12: EyeOff,
-    }
-  },
-  {
-    id: 7,
-    name: "Diamond",
-    icon: Diamond,
-    price: "฿500",
-    period: "เดือน",
-    color: "sky",
-    recommended: false,
-    benefits: [
-      "แชทได้วันละ 500 คน",
-      "อัพรูปภาพสำหรับแชทไม่จำกัด",
-      "อัพวิดีโอสำหรับแชทได้ไม่จำกัด",
-      "หมุนวงล้อของขวัญทุก 20 นาที",
-      "โบนัสรายวัน 50,000 เหรียญ",
-      "คะแนนโหวต 5,000 แต้ม",
-      "เพิ่มวิดีโอโปรไฟล์ 15 คลิป",
-      "ติ๊กยืนยันโปรไฟล์",
-      "กรอบโปรไฟล์พิเศษเฉพาะสมาชิก",
-      "ปักหมุดโพสต์ 20 โพสต์ หน้าโปรไฟล์",
-      "เบลอรูปภาพ ส่วนตัวได้ 15 รูป",
-      "สร้างห้องแชท ไม่จำกัดจำนวนคน",
-      "ตั้งค่าซ่อนสถานะออนไลน์ได้",
-      "โอนเหรียญได้",
-      "รับเหรียญเพิ่มทันที 100,000 เหรียญ",
-    ],
-    iconMap: {
-      0: MessageCircle,
-      1: Image,
-      2: Video,
-      3: Gift,
-      4: Coins,
-      5: Medal,
-      6: Video,
-      7: SquareCheck,
-      8: SquarePen,
-      9: SquarePen,
-      10: EyeOff,
-      11: Users2,
-      12: EyeOff,
-      13: Wallet,
-      14: Coins,
-    }
-  },
-  {
-    id: 8,
-    name: "Platinum",
-    icon: Crown,
-    price: "฿1,000",
-    period: "เดือน",
-    color: "cyan",
-    recommended: false,
-    benefits: [
-      "แชทได้ไม่จำกัด",
-      "อัพรูปภาพสำหรับแชทไม่จำกัด",
-      "อัพวิดีโอสำหรับแชทได้ไม่จำกัด",
-      "หมุนวงล้อของขวัญทุก 10 นาที",
-      "โบนัสรายวัน 100,000 เหรียญ",
-      "คะแนนโหวต 15,000 แต้ม",
-      "เพิ่มวิดีโอโปรไฟล์ 15 คลิป",
-      "ติ๊กยืนยันโปรไฟล์",
-      "กรอบโปรไฟล์พิเศษเฉพาะสมาชิก",
-      "ปักหมุดโพสต์ 20 โพสต์ หน้าโปรไฟล์",
-      "เบลอรูปภาพ ส่วนตัวได้ 15 รูป",
-      "สร้างห้องแชท ไม่จำกัดจำนวนคน",
-      "ตั้งค่าซ่อนสถานะออนไลน์ได้",
-      "โอนเหรียญได้",
-      "รับเหรียญเพิ่มทันที 100,000 เหรียญ",
-    ],
-    iconMap: {
-      0: MessageCircle,
-      1: Image,
-      2: Video,
-      3: Gift,
-      4: Coins,
-      5: Medal,
-      6: Video,
-      7: SquareCheck,
-      8: SquarePen,
-      9: SquarePen,
-      10: EyeOff,
-      11: Users2,
-      12: EyeOff,
-      13: Wallet,
-      14: Coins,
-    }
-  }
 ];
 
 // Minimalist, modern, chat-focused landing page inspired by soichat.com
@@ -1317,38 +1116,38 @@ export default function App() {
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text'
                 }}>
-                  <span className="text-3xl shimmer-text">✦</span>
-                  <span className="font-serif shimmer-text">SodeClick</span>
+                  <span className="text-3xl shimmer-text">💕</span>
+                  <span className="font-serif shimmer-text">LoveConnect</span>
                 </span>
                 <div className="flex justify-center fade-in-up">
-              <div className="flex bg-pink-100/50 rounded-full p-1 gap-1">
+              <div className="flex bg-gradient-to-r from-red-100/60 to-pink-100/60 rounded-full p-1 gap-1 shadow-md">
         <Button 
           onClick={() => setActiveTab("discover")}
           variant={activeTab === "discover" ? "premium" : "ghost"}
-          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${activeTab === "discover" ? "shimmer-gold" : "hover:bg-pink-200/60 hover:text-pink-700"}`}
+          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${activeTab === "discover" ? "shimmer-gold bg-gradient-to-r from-red-500 to-pink-500 text-white" : "hover:bg-red-200/60 hover:text-red-700"}`}
         >
-          <Search size={16} /> ค้นหาผู้คนใหม่ ๆ
+          <Heart size={16} /> ค้นหาคู่
+        </Button>
+        <Button 
+          onClick={() => setActiveTab("matches")}
+          variant={activeTab === "matches" ? "premium" : "ghost"}
+          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${activeTab === "matches" ? "shimmer-gold bg-gradient-to-r from-red-500 to-pink-500 text-white" : "hover:bg-red-200/60 hover:text-red-700"}`}
+        >
+          <Users2 size={16} /> แมตช์
         </Button>
         <Button 
           onClick={() => setActiveTab("chat")}
           variant={activeTab === "chat" ? "premium" : "ghost"}
-          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${activeTab === "chat" ? "shimmer-gold" : "hover:bg-pink-200/60 hover:text-pink-700"}`}
+          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${activeTab === "chat" ? "shimmer-gold bg-gradient-to-r from-red-500 to-pink-500 text-white" : "hover:bg-red-200/60 hover:text-red-700"}`}
         >
           <MessageCircle size={16} /> แชท
         </Button>
         <Button 
-          onClick={() => setActiveTab("meetup")}
-          variant={activeTab === "meetup" ? "premium" : "ghost"}
-          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${activeTab === "meetup" ? "shimmer-gold" : "hover:bg-pink-200/60 hover:text-pink-700"}`}
-        >
-          <MapPin size={16} /> นัดเจอ
-        </Button>
-        <Button 
           onClick={() => setActiveTab("premium")}
           variant={activeTab === "premium" ? "premium" : "ghost"}
-          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${activeTab === "premium" ? "shimmer-gold" : "hover:bg-pink-200/60 hover:text-pink-700"}`}
+          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all ${activeTab === "premium" ? "shimmer-gold bg-gradient-to-r from-red-500 to-pink-500 text-white" : "hover:bg-red-200/60 hover:text-red-700"}`}
         >
-          <Crown size={16} /> VIP
+          <Crown size={16} /> Premium
         </Button>
       </div>
     </div>
@@ -1465,12 +1264,29 @@ export default function App() {
         {/* Discover Tab */}
         {activeTab === "discover" && (
           <section className="max-w-6xl mx-auto px-4 py-8">
-            <h2 className="text-3xl font-serif font-bold text-pink-100 mb-8 text-center fade-in-up">EXCLUSIVE MEMBERS</h2>
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-serif font-bold text-white mb-4 fade-in-up">💕 ค้นหาคู่ของคุณ</h2>
+              <p className="text-white/80 text-lg">พบกับคนที่ใช่สำหรับคุณ</p>
+              <div className="flex justify-center gap-4 mt-6">
+                <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm">
+                  <Heart size={16} className="text-red-400" />
+                  <span className="text-white text-sm">ใส่ใจ</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm">
+                  <X size={16} className="text-gray-400" />
+                  <span className="text-white text-sm">ข้าม</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm">
+                  <Star size={16} className="text-yellow-400" />
+                  <span className="text-white text-sm">ซุปเปอร์ไลค์</span>
+                </div>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {users.map((user, index) => (
                                       <Card 
                         key={user.id} 
-                        className="hover:scale-105 hover:-translate-y-2 transition-all duration-300 cursor-pointer flex flex-col min-h-[400px] max-h-[450px] relative shadow-lg hover:shadow-2xl border border-pink-200/50 hover:border-pink-300/70 bg-gradient-to-br from-pink-300/70 to-purple-400/70 backdrop-blur-sm"
+                        className="hover:scale-105 hover:-translate-y-2 transition-all duration-300 cursor-pointer flex flex-col min-h-[450px] max-h-[500px] relative shadow-xl hover:shadow-2xl border-2 border-white/30 hover:border-red-300/70 bg-gradient-to-br from-white/90 to-pink-100/90 backdrop-blur-sm rounded-2xl overflow-hidden"
                         onClick={() => {
                           setSelectedUser(user);
                     setShowUserProfile(true);
@@ -1489,72 +1305,91 @@ export default function App() {
                     </div>
                   )}
                   
-                  <CardHeader className="flex flex-col items-center pb-2 flex-shrink-0">
-                    <div className="relative">
-                      {/* ข้อ 4: Avatar & Hero Image - รูปผู้ใช้มีแหวนทองล้อม */}
-                      <Avatar className="w-48 h-48 border-2 border-amber-400 p-0.5 group-hover:border-amber-300 rounded-lg" style={{
-                        boxShadow: '0 0 20px rgba(251, 191, 36, 0.7), inset 0 0 15px rgba(251, 191, 36, 0.3)'
-                      }}>
+                  <CardHeader className="flex flex-col items-center pb-2 flex-shrink-0 relative">
+                    {/* Background Image */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 rounded-t-2xl"></div>
+                    
+                    <div className="relative z-10 w-full">
+                      <Avatar className="w-full h-64 border-0 rounded-none" style={{ borderRadius: '0' }}>
                         <AvatarImage 
                           src={user.avatar} 
                           alt={user.name} 
-                          className="object-cover rounded-lg"
+                          className="object-cover w-full h-full"
                           onError={(e) => {
                             e.target.src = 'http://localhost:5000/uploads/avatar/default.png';
                           }}
                         />
-                        <AvatarFallback className="bg-pink-600 text-white font-bold text-lg rounded-lg">
+                        <AvatarFallback className="bg-gradient-to-br from-red-500 to-pink-600 text-white font-bold text-3xl w-full h-full rounded-none">
                           {user.name.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
+                      
+                      {/* Status indicators */}
                       {user.verified && (
-                        <div className="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                          <Check size={14} />
+                        <div className="absolute top-3 right-3 bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-lg">
+                          <Check size={16} />
                         </div>
                       )}
-                      <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full ${user.status === "ออนไลน์" ? "bg-green-400" : "bg-zinc-400"}`}></div>
-                    </div>
-                    <CardTitle className="mt-3 text-center leading-tight max-w-full truncate px-2">{user.name}, {user.age}</CardTitle>
-                    <div className="text-xs text-pink-600 mb-1 font-serif uppercase tracking-wider flex items-center gap-1">
-                      <MapPin size={12} /> {user.location}
-                    </div>
-                    {user.roleName && (
-                      <div className={`text-xs font-semibold mb-1 px-2 py-1 rounded-full ${getRoleDisplayStyle(user.role)}`}>
-                        {user.roleName}
+                      <div className={`absolute top-3 left-3 w-4 h-4 rounded-full border-2 border-white shadow-lg ${user.status === "ออนไลน์" ? "bg-green-400" : "bg-gray-400"}`}></div>
+                      
+                      {/* Age badge */}
+                      <div className="absolute bottom-3 right-3 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">
+                        {user.age}
                       </div>
-                    )}
+                    </div>
                   </CardHeader>
-                  <CardContent className="flex flex-wrap gap-1 justify-center pt-2 flex-1 items-start min-h-0">
+                  
+                  <CardContent className="flex flex-col gap-3 p-4 flex-1">
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-800 mb-1">{user.name}</CardTitle>
+                      <div className="text-sm text-gray-600 flex items-center gap-1 mb-2">
+                        <MapPin size={14} className="text-red-500" /> 
+                        <span>{user.location}</span>
+                      </div>
+                      {user.roleName && (
+                        <div className={`text-xs font-semibold inline-block px-2 py-1 rounded-full ${getRoleDisplayStyle(user.role)}`}>
+                          {user.roleName}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Interest tags */}
+                    <div className="flex flex-wrap gap-1">
+                      {['🎵 ดนตรี', '🍕 อาหาร', '✈️ ท่องเที่ยว', '📚 หนังสือ'].slice(0, Math.floor(Math.random() * 3) + 2).map((interest, idx) => (
+                        <span key={idx} className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">
+                          {interest}
+                        </span>
+                      ))}
+                    </div>
                   </CardContent>
-                  <CardFooter className="flex gap-2 pt-2 pb-3 px-4 justify-center mt-auto">
+                  <CardFooter className="flex gap-3 p-4 justify-center">
                     <Button
                       onClick={(e) => {
-                        e.stopPropagation(); // ป้องกันไม่ให้ trigger card click
-                        handleLikeUser(user.id);
+                        e.stopPropagation();
+                        // Skip/Pass action
                       }}
-                      variant={likedUsers.includes(user.id) ? "default" : "outline"}
-                      size="sm"
-                      className={`text-xs flex gap-1 items-center justify-center px-3 py-1.5 font-semibold rounded-lg transition-all duration-200 ${
-                        likedUsers.includes(user.id) 
-                          ? 'bg-pink-500 hover:bg-pink-600 text-white border-pink-500 shadow-md hover:shadow-lg' 
-                          : 'border-2 border-pink-500 text-pink-600 bg-white/90 hover:bg-pink-500 hover:text-white shadow-sm hover:shadow-md'
-                      }`}
+                      variant="outline"
+                      size="lg"
+                      className="flex-1 border-2 border-gray-300 text-gray-600 hover:bg-gray-100 rounded-full py-3 font-semibold transition-all duration-200"
                     >
-                      <Heart size={12} fill={likedUsers.includes(user.id) ? "white" : "none"} className="flex-shrink-0" />
-                      {likedUsers.includes(user.id) ? "Liked" : "Like"}
+                      <X size={18} className="mr-2" />
+                      ข้าม
                     </Button>
                     <Button
                       onClick={(e) => {
-                        e.stopPropagation(); // ป้องกันไม่ให้ trigger card click
-                        setSelectedUser(user);
-                        setActiveTab("chat");
+                        e.stopPropagation();
+                        handleLikeUser(user.id);
                       }}
-                      variant="default"
-                      size="sm"
-                      className="text-xs flex gap-1 items-center justify-center px-3 py-1.5 bg-pink-500 hover:bg-pink-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                      variant={likedUsers.includes(user.id) ? "default" : "outline"}
+                      size="lg"
+                      className={`flex-1 rounded-full py-3 font-semibold transition-all duration-200 ${
+                        likedUsers.includes(user.id) 
+                          ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg hover:shadow-xl' 
+                          : 'border-2 border-red-500 text-red-600 hover:bg-gradient-to-r hover:from-red-500 hover:to-pink-500 hover:text-white shadow-md hover:shadow-lg'
+                      }`}
                     >
-                      <MessageCircle size={12} className="flex-shrink-0" />
-                      Message
+                      <Heart size={18} fill={likedUsers.includes(user.id) ? "white" : "none"} className="mr-2" />
+                      {likedUsers.includes(user.id) ? "ถูกใจแล้ว" : "ถูกใจ"}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -1563,20 +1398,118 @@ export default function App() {
           </section>
         )}
 
+        {/* Matches Tab */}
+        {activeTab === "matches" && (
+          <section className="max-w-6xl mx-auto px-4 py-8">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-serif font-bold text-white mb-4 fade-in-up">💕 Your Matches</h2>
+              <p className="text-white/80 text-lg">คนที่ถูกใจคุณและคุณก็ถูกใจเขา</p>
+            </div>
+            
+            {/* Mutual Matches */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {users.filter(user => likedUsers.includes(user.id)).slice(0, 6).map((user) => (
+                <Card 
+                  key={user.id}
+                  className="hover:scale-105 transition-all duration-300 cursor-pointer bg-gradient-to-br from-red-400/80 to-pink-500/80 backdrop-blur-sm border-2 border-red-300/50 shadow-xl hover:shadow-2xl"
+                  onClick={() => {
+                    setSelectedUser(user);
+                    setActiveTab("chat");
+                  }}
+                >
+                  <CardHeader className="flex flex-col items-center pb-4">
+                    <div className="relative">
+                      <Avatar className="w-32 h-32 border-3 border-white shadow-lg">
+                        <AvatarImage 
+                          src={user.avatar} 
+                          alt={user.name} 
+                          className="object-cover"
+                          onError={(e) => {
+                            e.target.src = 'http://localhost:5000/uploads/avatar/default.png';
+                          }}
+                        />
+                        <AvatarFallback className="bg-gradient-to-br from-red-500 to-pink-600 text-white font-bold text-xl">
+                          {user.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg">
+                        <Heart size={16} fill="white" />
+                      </div>
+                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${user.status === "ออนไลน์" ? "bg-green-400" : "bg-gray-400"}`}></div>
+                    </div>
+                    <CardTitle className="mt-3 text-center text-white font-bold">{user.name}, {user.age}</CardTitle>
+                    <div className="text-sm text-white/90 flex items-center gap-1">
+                      <MapPin size={14} /> {user.location}
+                    </div>
+                  </CardHeader>
+                  <CardFooter className="pt-0">
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedUser(user);
+                        setActiveTab("chat");
+                      }}
+                      className="w-full bg-white text-red-600 hover:bg-red-50 font-semibold rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+                    >
+                      <MessageCircle size={16} className="mr-2" />
+                      เริ่มแชท
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+            
+            {/* People who liked you */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-white mb-6 text-center">💖 คนที่ถูกใจคุณ</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                {users.slice(0, 12).map((user) => (
+                  <div 
+                    key={user.id}
+                    className="relative group cursor-pointer"
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setShowUserProfile(true);
+                    }}
+                  >
+                    <Avatar className="w-20 h-20 mx-auto border-2 border-white/50 group-hover:border-red-400 transition-all duration-200 shadow-lg group-hover:shadow-xl">
+                      <AvatarImage 
+                        src={user.avatar} 
+                        alt={user.name}
+                        className="object-cover"
+                        onError={(e) => {
+                          e.target.src = 'http://localhost:5000/uploads/avatar/default.png';
+                        }}
+                      />
+                      <AvatarFallback className="bg-gradient-to-br from-red-500 to-pink-600 text-white font-bold">
+                        {user.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-white text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      {user.name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Chat Tab */}
         {activeTab === "chat" && (
           <section className="w-full px-4 py-8">
             <div className="w-full max-w-4xl mx-auto">
-              {/* Chat Menu Bar */}
-              <div className="bg-gradient-to-r from-pink-50 to-pink-100 border border-pink-500/30 rounded-xl mb-6 p-4">
+              {/* Chat Header */}
+              <div className="bg-gradient-to-r from-red-50 to-pink-50 border border-red-300/50 rounded-xl mb-6 p-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-6">
                     <div className="flex items-center gap-3">
-                      <div className="bg-pink-500/20 p-2 rounded-full">
-                        <MessageCircle size={24} className="text-pink-600" />
+                      <div className="bg-gradient-to-r from-red-500 to-pink-500 p-2 rounded-full shadow-md">
+                        <MessageCircle size={24} className="text-white" />
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-pink-600 font-serif">ELITE CHAT</h2>
+                        <h2 className="text-xl font-bold text-red-600 font-serif">💕 Love Chat</h2>
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                           <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-400' : 'bg-red-400'}`}></div>
                           <span>{isConnected ? 'เชื่อมต่อแล้ว' : 'กำลังเชื่อมต่อ...'}</span>
@@ -1584,61 +1517,50 @@ export default function App() {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-2 bg-pink-500/10 px-4 py-2 rounded-full">
-                      <Users size={16} className="text-pink-600" />
-                      <span className="text-pink-600 font-medium">{onlineUsers} คนออนไลน์</span>
+                    <div className="flex items-center gap-2 bg-red-500/10 px-4 py-2 rounded-full">
+                      <Heart size={16} className="text-red-600" />
+                      <span className="text-red-600 font-medium">{onlineUsers} คนออนไลน์</span>
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    {/* DJ Button */}
+                    {/* Matches Button */}
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-purple-400 hover:bg-purple-500/20 flex items-center gap-2"
-                      onClick={() => setShowDJModal(true)}
+                      className="text-red-500 hover:bg-red-500/20 flex items-center gap-2"
+                      onClick={() => setActiveTab("matches")}
                     >
-                      <Play size={16} />
-                      <span className="hidden md:inline">ดีเจ</span>
+                      <Users2 size={16} />
+                      <span className="hidden md:inline">แมตช์</span>
                     </Button>
                     
-                    {/* Superstar Button */}
+                    {/* Profile Button */}
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-yellow-400 hover:bg-yellow-500/20 flex items-center gap-2"
-                      onClick={() => window.open('/superstar', '_blank')}
+                      className="text-pink-500 hover:bg-pink-500/20 flex items-center gap-2"
+                      onClick={() => setActiveTab("profile")}
                     >
-                      <Star size={16} />
-                      <span className="hidden md:inline">ซุปตาร์</span>
+                      <User size={16} />
+                      <span className="hidden md:inline">โปรไฟล์</span>
                     </Button>
                     
-                    {/* Game Button */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-green-400 hover:bg-green-500/20 flex items-center gap-2"
-                      onClick={() => setShowGameModal(true)}
-                    >
-                      <Target size={16} />
-                      <span className="hidden md:inline">เกม</span>
+                    <Button variant="ghost" size="sm" className="text-red-600 hover:bg-red-500/20">
+                      <Heart size={16} />
                     </Button>
-                    
-                    <Button variant="ghost" size="sm" className="text-pink-600 hover:bg-pink-500/20">
-                      <ThumbsUp size={16} />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="text-pink-600 hover:bg-pink-500/20">
+                    <Button variant="ghost" size="sm" className="text-red-600 hover:bg-red-500/20">
                       <Smile size={16} />
                     </Button>
                   </div>
                 </div>
               </div>
               
-              <Card className="min-h-[800px] max-h-[1000px] flex flex-col bg-gradient-to-b from-white to-pink-50 border-pink-500/30">
-                <CardHeader className="px-8 py-4 border-b border-pink-500/20 bg-pink-50/50 rounded-t-xl">
+              <Card className="min-h-[800px] max-h-[1000px] flex flex-col bg-gradient-to-b from-white to-red-50 border-red-300/30 shadow-lg">
+                <CardHeader className="px-8 py-4 border-b border-red-300/20 bg-gradient-to-r from-red-50/50 to-pink-50/50 rounded-t-xl">
                   <div className="flex justify-center items-center">
-                    <div className="text-center text-base text-pink-600/70 bg-pink-500/10 py-2 px-4 rounded-full">
-                      💎 ห้องแชทสำหรับสมาชิกเอลิท • เชื่อมต่อแบบเรียลไทม์
+                    <div className="text-center text-base text-red-600/70 bg-red-500/10 py-2 px-4 rounded-full">
+                      💕 ห้องแชทสำหรับคู่รัก • พูดคุยและทำความรู้จักกัน
                     </div>
                   </div>
                 </CardHeader>
@@ -2225,33 +2147,176 @@ export default function App() {
           </section>
         )}
 
+        {/* Profile Tab */}
+        {activeTab === "profile" && (
+          <section className="max-w-4xl mx-auto px-4 py-8">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-serif font-bold text-white mb-4 fade-in-up">👤 โปรไฟล์ของคุณ</h2>
+              <p className="text-white/80 text-lg">จัดการข้อมูลส่วนตัวและการตั้งค่า</p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Profile Card */}
+              <div className="lg:col-span-1">
+                <Card className="bg-white/90 backdrop-blur-sm border-red-300/50 shadow-xl">
+                  <CardHeader className="text-center pb-4">
+                    <div className="relative mx-auto mb-4">
+                      <Avatar className="w-32 h-32 border-4 border-red-400 shadow-lg">
+                        <AvatarImage 
+                          src={user?.avatar || `${API_BASE_URL}/uploads/avatar/default.png`}
+                          alt={user?.username || 'User'}
+                          className="object-cover"
+                        />
+                        <AvatarFallback className="bg-gradient-to-br from-red-500 to-pink-600 text-white font-bold text-2xl">
+                          {user?.username?.charAt(0).toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <Button
+                        size="sm"
+                        className="absolute bottom-0 right-0 rounded-full bg-red-500 hover:bg-red-600 text-white p-2"
+                      >
+                        <SquarePen size={16} />
+                      </Button>
+                    </div>
+                    <CardTitle className="text-xl text-gray-800">{user?.username || 'ผู้ใช้'}</CardTitle>
+                    <p className="text-gray-600">สมาชิกตั้งแต่ {new Date().getFullYear()}</p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                      <span className="text-gray-700">สถานะ</span>
+                      <span className="text-green-600 font-semibold">ออนไลน์</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                      <span className="text-gray-700">แผนสมาชิก</span>
+                      <span className="text-red-600 font-semibold">Basic</span>
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white">
+                      อัพเกรดแผน
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Profile Settings */}
+              <div className="lg:col-span-2 space-y-6">
+                <Card className="bg-white/90 backdrop-blur-sm border-red-300/50 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="text-gray-800 flex items-center gap-2">
+                      <User size={20} />
+                      ข้อมูลส่วนตัว
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">ชื่อ</label>
+                        <input 
+                          type="text" 
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                          placeholder="ชื่อของคุณ"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">อายุ</label>
+                        <input 
+                          type="number" 
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                          placeholder="อายุ"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">เกี่ยวกับฉัน</label>
+                      <textarea 
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 h-24"
+                        placeholder="เล่าเกี่ยวกับตัวคุณ..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">ความสนใจ</label>
+                      <div className="flex flex-wrap gap-2">
+                        {['🎵 ดนตรี', '🍕 อาหาร', '✈️ ท่องเที่ยว', '📚 หนังสือ', '🎬 หนัง', '🏃‍♂️ กีฬา'].map((interest) => (
+                          <Button
+                            key={interest}
+                            variant="outline"
+                            size="sm"
+                            className="border-red-300 text-red-600 hover:bg-red-50"
+                          >
+                            {interest}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                    <Button className="bg-red-500 hover:bg-red-600 text-white">
+                      บันทึกการเปลี่ยนแปลง
+                    </Button>
+                  </CardContent>
+                </Card>
+                
+                {/* Privacy Settings */}
+                <Card className="bg-white/90 backdrop-blur-sm border-red-300/50 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="text-gray-800 flex items-center gap-2">
+                      <Lock size={20} />
+                      การตั้งค่าความเป็นส่วนตัว
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">แสดงสถานะออนไลน์</span>
+                      <div className="w-12 h-6 bg-red-500 rounded-full relative cursor-pointer">
+                        <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow-sm"></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">อนุญาตให้ส่งข้อความ</span>
+                      <div className="w-12 h-6 bg-red-500 rounded-full relative cursor-pointer">
+                        <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow-sm"></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700">แสดงในผลการค้นหา</span>
+                      <div className="w-12 h-6 bg-red-500 rounded-full relative cursor-pointer">
+                        <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow-sm"></div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Premium Tab */}
         {activeTab === "premium" && (
           <section className="max-w-6xl mx-auto px-4 py-8">
-            <h2 className="text-3xl font-serif font-bold text-pink-600 mb-8 text-center fade-in-up shimmer-text">แพคเกจสมาชิก</h2>
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-serif font-bold text-white mb-4 fade-in-up">💎 แผนสมาชิก Premium</h2>
+              <p className="text-white/80 text-lg">เลือกแผนที่เหมาะกับคุณเพื่อพบรักแท้</p>
+            </div>
             
             {/* Filter/Category Buttons */}
             <div className="flex justify-center gap-4 mb-8 fade-in-up" style={{animationDelay: '0.2s'}}>
               <Button 
                 variant={currentPlanFilter === 'all' ? "default" : "outline"}
                 onClick={() => setCurrentPlanFilter('all')}
-                className={`rounded-full ${currentPlanFilter === 'all' ? 'bg-pink-500 hover:bg-pink-600 text-white shimmer-gold' : 'border border-pink-400 text-pink-600 bg-white/70 hover:bg-pink-100 hover:border-pink-500 transition-all duration-200'}`}
+                className={`rounded-full ${currentPlanFilter === 'all' ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg' : 'border-2 border-red-400 text-red-600 bg-white/80 hover:bg-red-50 hover:border-red-500 transition-all duration-200'}`}
               >
-                แพคเกจทั้งหมด
+                ทั้งหมด
               </Button>
               <Button 
                 variant={currentPlanFilter === 'basic' ? "default" : "outline"}
                 onClick={() => setCurrentPlanFilter('basic')}
-                className={`rounded-full ${currentPlanFilter === 'basic' ? 'bg-pink-500 hover:bg-pink-600 text-white shimmer-gold' : 'border border-pink-400 text-pink-600 bg-white/70 hover:bg-pink-100 hover:border-pink-500 transition-all duration-200'}`}
+                className={`rounded-full ${currentPlanFilter === 'basic' ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg' : 'border-2 border-red-400 text-red-600 bg-white/80 hover:bg-red-50 hover:border-red-500 transition-all duration-200'}`}
               >
-                แพคเกจพื้นฐาน
+                เริ่มต้น
               </Button>
               <Button 
                 variant={currentPlanFilter === 'premium' ? "default" : "outline"}
                 onClick={() => setCurrentPlanFilter('premium')}
-                className={`rounded-full ${currentPlanFilter === 'premium' ? 'bg-pink-500 hover:bg-pink-600 text-white shimmer-gold' : 'border border-pink-400 text-pink-600 bg-white/70 hover:bg-pink-100 hover:border-pink-500 transition-all duration-200'}`}
+                className={`rounded-full ${currentPlanFilter === 'premium' ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg' : 'border-2 border-red-400 text-red-600 bg-white/80 hover:bg-red-50 hover:border-red-500 transition-all duration-200'}`}
               >
-                แพคเกจพรีเมียม
+                พรีเมียม
               </Button>
             </div>
             

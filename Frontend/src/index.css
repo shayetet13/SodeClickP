@@ -1,0 +1,495 @@
+/* Reset & base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom elite dating app styles */
+body {
+  font-family: 'Montserrat', 'Prompt', 'sans-serif';
+  background: linear-gradient(135deg, #000 0%, #111 50%, #222 100%);
+  min-height: 100vh;
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  background: #111;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(217, 119, 6, 0.3);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 119, 6, 0.5);
+}
+
+/* Premium UI Elements */
+.gold-gradient {
+  background: linear-gradient(135deg, #b78628 0%, #ffd700 50%, #b78628 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.premium-card {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.premium-card:hover {
+  border-color: rgba(217, 119, 6, 0.4);
+  box-shadow: 0 8px 30px rgba(217, 119, 6, 0.1);
+}
+
+/* ข้อ 9: ระบบแอนิเมชันเล็กน้อย - @keyframes shimmer และ fadeIn ใช้กับ UI บางจุดให้ดูมีการเคลื่อนไหวหรูหรา */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes shimmer-gold {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-border {
+  position: relative;
+  border: 1px solid transparent;
+  background: linear-gradient(90deg, rgba(217, 119, 6, 0), rgba(217, 119, 6, 0.3), rgba(217, 119, 6, 0)) 0 0 / 200% 100%;
+  animation: shimmer 3s infinite;
+  border-radius: 0.5rem;
+}
+
+.shimmer-gold {
+  background: linear-gradient(90deg, rgba(251, 191, 36, 0), rgba(251, 191, 36, 0.4), rgba(251, 191, 36, 0)) 0 0 / 200% 100%;
+  animation: shimmer-gold 2.5s infinite;
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24) 0 0 / 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-gold 3s infinite;
+}
+
+/* Text styling */
+.serif-text {
+  font-family: 'Playfair Display', 'Serif';
+}
+
+/* Custom button styling */
+.elite-button {
+  @apply bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold rounded-md px-4 py-2;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(217, 119, 6, 0.1);
+}
+
+.elite-button:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 2px 5px rgba(217, 119, 6, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Avatar styling */
+.avatar-ring {
+  box-shadow: 0 0 0 2px black, 0 0 0 4px #b78628;
+}
+
+/* Navbar */
+nav {
+  backdrop-filter: blur(8px);
+}
+
+/* Hero image */
+.hero-img {
+  box-shadow: 0 8px 32px 0 rgba(80, 80, 160, 0.15);
+  border-radius: 2rem;
+  border: 8px solid #fff;
+}
+
+/* Card */
+.card {
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 24px 0 rgba(80, 80, 160, 0.08);
+  background: #fff;
+  transition: transform 0.15s;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+/* Premium gradient */
+.premium-gradient {
+  background: linear-gradient(135deg, #fce7f3 0%, #dbeafe 100%);
+}
+
+/* Button override for primary */
+.btn-primary {
+  @apply bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full shadow-lg;
+}
+
+/* Button override for secondary */
+.btn-secondary {
+  @apply bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full shadow-lg;
+}
+
+/* Section titles */
+.section-title {
+  @apply text-2xl md:text-3xl font-extrabold text-blue-700 mb-8 text-center;
+}
+
+/* Enhanced button visibility for cards */
+.card button, 
+div[class*="rounded-xl"] button {
+  font-weight: 600 !important;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+div[class*="rounded-xl"] button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Increase text visibility */
+.bg-amber-600, .bg-amber-500 {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+/* ข้อ 8: ปุ่มที่มืดและเด่นชัด - ปุ่มดำที่ยังอ่านง่าย, มีขอบทอง */
+button.bg-black, 
+button.bg-zinc-800,
+button.bg-zinc-900 {
+  color: white !important;
+  border-color: rgba(245, 158, 11, 0.5) !important;
+  border-width: 2px !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+button.bg-black:hover, 
+button.bg-zinc-800:hover,
+button.bg-zinc-900:hover {
+  border-color: rgba(245, 158, 11, 0.7) !important;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+/* Image aspect ratio and fit improvements */
+.card-image {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-image {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* ข้อ 7: ภาพและ Container - ปรับให้ภาพสวยขึ้นแบบ responsive */
+.image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.image-container img:hover {
+  transform: scale(1.05);
+}
+
+/* Fix for venue cards */
+.venue-card-image {
+  width: 100%;
+  height: 192px; /* h-48 = 192px */
+  object-fit: cover;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* Avatar sizing */
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d97706;
+}
+
+/* Concierge image */
+.concierge-image {
+  width: 100%;
+  height: 256px; /* h-64 = 256px */
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+/* Hide scrollbar for carousel */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Card styling for plans */
+.plan-card {
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-card:hover {
+  transform: scale(1.05) translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.plan-card.active {
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(217, 119, 6, 0.2);
+}
+
+/* Scrollbar styling for plan benefits */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #18181b;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #92400e;
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #b45309;
+}
+
+/* Dot indicators for carousel */
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #3f3f46;
+  transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+  width: 20px;
+  border-radius: 10px;
+  background-color: #fbbf24;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+/* Enhanced carousel navigation */
+.carousel-nav-button {
+  opacity: 0.8;
+  transition: all 0.2s ease;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.carousel-nav-button:hover:not(:disabled) {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+  background: rgba(251, 191, 36, 0.2);
+  border-color: rgba(251, 191, 36, 0.5);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+}
+
+.carousel-nav-button:disabled {
+  opacity: 0.3;
+}
+
+/* Ensure all cards in carousel are visible */
+.carousel-container {
+  position: relative;
+  padding: 0 2rem;
+}
+
+.carousel-item {
+  min-height: 420px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.carousel-item:hover {
+  transform: scale(1.05) translateY(-8px);
+  box-shadow: 0 15px 35px rgba(217, 119, 6, 0.25);
+}
+
+/* Membership plan grid styling */
+.plan-grid-item {
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.plan-grid-item:hover {
+  transform: scale(1.05) translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.plan-grid-item.recommended {
+  transform: scale(1.05);
+  z-index: 5;
+}
+
+/* Membership comparison table */
+.comparison-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.comparison-table th,
+.comparison-table td {
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  padding: 12px;
+}
+
+.comparison-table th {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.comparison-table tr:nth-child(odd) td {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.comparison-table tr:nth-child(even) td {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* ข้อ 9: ระบบแอนิเมชันเล็กน้อย - @keyframes shimmer และ fadeIn ใช้กับ UI บางจุดให้ดูมีการเคลื่อนไหวหรูหรา */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.feature-item {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.fade-in-scale {
+  animation: fadeInScale 0.4s ease forwards;
+}
+
+/* Suppress some console warnings */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide ad-related elements */
+[src*="doubleclick"],
+[src*="googleads"],
+[src*="googlesyndication"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Block specific tracking domains */
+img[src*="doubleclick.net"],
+script[src*="googletagmanager.com"],
+script[src*="google-analytics.com"] {
+  display: none !important;
+}
+
+/* YouTube embed improvements */
+.youtube-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+.youtube-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Prevent CORS and tracking issues */
+iframe[src*="youtube"] {
+  referrerpolicy: no-referrer;
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .hero-img {
+    width: 10rem;
+    height: 10rem;
+    border-width: 4px;
+  }
+  .card {
+    padding: 1rem;
+  }
+  
+  /* ข้อ 7: ภาพและ Container - ปรับให้ภาพสวยขึ้นแบบ responsive */
+  .image-container {
+    border-radius: 0.5rem;
+  }
+  
+  .image-container img {
+    transition: transform 0.3s ease;
+  }
+  
+  .image-container img:hover {
+    transform: scale(1.03);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* ข้อ 7: ภาพและ Container - ปรับให้ภาพสวยขึ้นแบบ responsive */
+  .image-container img:hover {
+    transform: scale(1.04);
+  }
+}
+
+@media (min-width: 1025px) {
+  /* ข้อ 7: ภาพและ Container - ปรับให้ภาพสวยขึ้นแบบ responsive */
+  .image-container img:hover {
+    transform: scale(1.05);
+  }
+}

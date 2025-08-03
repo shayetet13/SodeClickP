@@ -1,0 +1,25 @@
+{
+  "name": "love-root",
+  "private": true,
+  "scripts": {
+    "install-all": "npm --prefix Frontend install && npm --prefix Backend install",
+    "postinstall": "npm install concurrently",
+    "dev": "concurrently \"npm --prefix Frontend run dev\" \"npm --prefix Backend run dev\"",
+    "dev:fallback": "concurrently \"npm --prefix Frontend run dev\" \"node Backend/fallback.js\"",
+    "start": "cd Backend && npm start",
+    "build": "npm --prefix Frontend run build:prod",
+    "build:backend": "npm --prefix Backend install",
+    "build:frontend": "npm --prefix Frontend run build:prod",
+    "serve:frontend": "npm --prefix Frontend run serve",
+    "build:all": "npm run build:backend && npm run build:frontend",
+    "test-cors": "node Backend/fallback.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@radix-ui/react-slider": "^1.3.5",
+    "react-image-crop": "^11.0.10",
+    "react-router-dom": "^7.7.0"
+  }
+}
